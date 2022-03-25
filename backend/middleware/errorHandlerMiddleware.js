@@ -1,11 +1,10 @@
 const { ApiError } = require('../errors/ApiError');
 
-const errorHandlerMiddleware = (err, _, res, next) => {
+const errorHandlerMiddleware = (err, _, res, __) => {
     if (err instanceof ApiError) {
         return res.status(err.code).json({ message: err.message });
     }
-    res.status(500).json({ message: 'Unpredictable error occured' });
-    return next();
+    return res.status(500).json({ message: 'Unpredictable error' });
 };
 
 module.exports = { errorHandlerMiddleware };

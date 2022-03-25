@@ -1,31 +1,30 @@
 const jwt = require('jsonwebtoken');
+const { ApiError } = require('../errors/ApiError');
 const { User, generateUserObject } = require('../models/userModel');
 
-const authMiddleware = async (req, res, next) => {
+const authMiddleware = async (req, _, next) => {
     const auth = req.headers.authorization;
     if (!auth) {
-        return res
-            .status(401)
-            .json({ message: 'Authorization header not applied' });
+        return next(ApiError.unauthorizedAuthorizationHeader());
     }
     const token = auth.split(' ')[1];
     if (!token) {
-        return res.status(401).json({ message: 'Token not applied' });
+        return next(ApiError.unauthorizedToken());
     }
     if (auth?.startsWith('Bearer')) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             const user = await User.findById(decoded._id).select('-password');
             if (!user) {
-                return res.status(401).json({ message: 'User not found' });
+                return next(ApiError.unauthorizedUser());
             }
             req.user = generateUserObject(user, false);
             return next();
         } catch (err) {
-            return res.status(401).json({ message: 'Unauthorized' });
+            return next(ApiError.unauthorized());
         }
     }
-    return res.status(401).json({ message: 'Bad authorization header' });
+    return next(ApiError.unauthorizedAuthorizationHeaderInvalid());
 };
 
 module.exports = { authMiddleware };
