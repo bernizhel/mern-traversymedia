@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const { ApiError } = require('../errors/ApiError');
-const { User, generateUserObject } = require('../models/userModel');
+const { User } = require('../models/userModel');
+const { generateJwt } = require('../utils');
 
 class UsersController {
     // @desc Register user
@@ -35,7 +36,7 @@ class UsersController {
             if (!user) {
                 return next(ApiError.badRequestUserFieldsInvalid());
             }
-            return res.status(201).json(generateUserObject(user));
+            return res.status(201).json({ token: generateJwt(user._id) });
         } catch (err) {
             return next(ApiError.databaseError());
         }
@@ -54,7 +55,7 @@ class UsersController {
         try {
             const user = await User.findOne({ email });
             if (user && (await bcrypt.compare(password, user.password))) {
-                return res.status(200).json(generateUserObject(user));
+                return res.status(200).json({ token: generateJwt(user._id) });
             }
             return next(ApiError.badRequestUserFieldsInvalid());
         } catch (err) {
@@ -67,8 +68,7 @@ class UsersController {
     // @access Private
     async auth(req, res, next) {
         try {
-            const user = await User.findById(req.user._id);
-            return res.status(200).json(generateUserObject(user, false));
+            return res.status(200).json({ _id: req.user._id });
         } catch (err) {
             return next(ApiError.databaseError());
         }

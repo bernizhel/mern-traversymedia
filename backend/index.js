@@ -14,8 +14,9 @@ const app = express();
 
 app.use(
     cors({
-        origin: 'http://localhost:3000 *',
-        optionssuccessStatus: 200,
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        optionsSuccessStatus: 200,
     }),
 );
 app.use(express.json());

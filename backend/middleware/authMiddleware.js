@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { ApiError } = require('../errors/ApiError');
-const { User, generateUserObject } = require('../models/userModel');
+const { User } = require('../models/userModel');
+const { generateJwt } = require('../utils');
 
 const authMiddleware = async (req, _, next) => {
     const auth = req.headers.authorization;
@@ -14,11 +15,11 @@ const authMiddleware = async (req, _, next) => {
     if (auth?.startsWith('Bearer')) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            const user = await User.findById(decoded._id).select('-password');
+            const user = await User.findById(decoded._id);
             if (!user) {
                 return next(ApiError.unauthorizedUser());
             }
-            req.user = generateUserObject(user, false);
+            req.user = { _id: user._id };
             return next();
         } catch (err) {
             return next(ApiError.unauthorized());
