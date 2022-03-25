@@ -1,13 +1,14 @@
 const { ApiError } = require('../errors/ApiError');
 const { Goal } = require('../models/goalModel');
+const { User } = require('../models/userModel');
 
 class GoalsController {
     // @desc Get all goals
     // @route GET /api/goals
     // @access Private
-    async get(_, res) {
+    async get(req, res) {
         try {
-            const goals = await Goal.find();
+            const goals = await Goal.find({ user: req.user._id });
             return res.status(200).json(goals);
         } catch (err) {
             return next(ApiError.badRequest('Bad database request'));
@@ -19,8 +20,12 @@ class GoalsController {
     // @access Private
     async getOne(req, res, next) {
         try {
-            const goal = await Goal.findById(req.params.id);
-            if (!goal) return next(ApiError.notFound('The goal not found'));
+            const goal = await Goal.findOne({
+                _id: req.params.id,
+                user: req.user._id,
+            });
+            if (!goal)
+                return next(ApiError.notFound('Goal not found for this user'));
             return res.status(200).json(goal);
         } catch (err) {
             return next(ApiError.badRequest('Bad database request'));
@@ -34,8 +39,8 @@ class GoalsController {
         const text = req.body.text;
         if (!text) return next(ApiError.badRequest('Text field not applied'));
         try {
-            const goal = await Goal.create({ text });
-            return res.status(200).json(goal);
+            const goal = await Goal.create({ text, user: req.user._id });
+            return res.status(201).json(goal);
         } catch (err) {
             return next(ApiError.badRequest('Bad database request'));
         }
@@ -48,13 +53,14 @@ class GoalsController {
         const text = req.body.text;
         if (!text) return next(ApiError.badRequest('Text field not applied'));
         try {
-            const updatedGoal = await Goal.findByIdAndUpdate(
-                req.params.id,
+            const updatedGoal = await Goal.findOneAndUpdate(
+                { _id: req.params.id, user: req.user._id },
                 { text },
                 { new: true },
             );
-            if (!updatedGoal)
-                return next(ApiError.notFound('The goal not found'));
+            if (!updatedGoal) {
+                return next(ApiError.notFound('Goal not found for this user'));
+            }
             return res.status(200).json(updatedGoal);
         } catch (err) {
             return next(ApiError.badRequest('Bad database request'));
@@ -66,14 +72,17 @@ class GoalsController {
     // @access Private
     async deleteOne(req, res, next) {
         try {
-            const deletedGoal = await Goal.findByIdAndDelete(req.params.id);
+            const deletedGoal = await Goal.findOneAndDelete({
+                _id: req.params.id,
+                user: req.user._id,
+            });
             if (!deletedGoal) {
-                return next(ApiError.notFound('The goal not found'));
+                return next(ApiError.notFound('Goal not found for this user'));
             }
+            return res.status(200).json({ _id: req.params.id });
         } catch (err) {
             return next(ApiError.badRequest('Bad database request'));
         }
-        return res.status(200).json({ id: req.params.id });
     }
 }
 
