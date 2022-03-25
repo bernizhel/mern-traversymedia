@@ -1,11 +1,11 @@
 {
-    "name": "mern-traversymedia",
+    "name": "mern-traversymedia-backend",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {
-        "server": "node backend/index.js",
-        "server:dev": "nodemon backend/index.js"
+        "start": "node index.js",
+        "start:dev": "nodemon index.js"
     },
     "keywords": [],
     "author": "Danil Kosenko <detrop.1995@gmail.com>",

@@ -7,7 +7,7 @@ const {
     errorHandlerMiddleware,
 } = require('./middleware/errorHandlerMiddleware');
 
-const port = process.env.PORT ?? 5000;
+const PORT = process.env.PORT ?? 5000;
 
 const app = express();
 
@@ -21,8 +21,8 @@ app.use(errorHandlerMiddleware);
 
 const start = () => {
     connectMongoDB();
-    app.listen(port, () => {
-        console.log('The server is running on port ' + port);
+    app.listen(PORT, () => {
+        console.log('The server is running on port ' + PORT);
     });
 };
 
