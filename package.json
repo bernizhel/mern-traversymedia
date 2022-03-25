@@ -2,23 +2,23 @@
     "name": "mern-traversymedia",
     "version": "1.0.0",
     "description": "",
+    "keywords": [],
+    "author": "Danil Kosenko <detrop.1995@gmail.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/bernizhel/mern-traversymedia.git"
+    },
+    "bugs": {
+        "url": "https://github.com/bernizhel/mern-traversymedia/issues"
+    },
+    "homepage": "https://github.com/bernizhel/mern-traversymedia#readme",
     "main": "index.js",
     "scripts": {
         "server": "npm run start --prefix backend",
         "client": "npm run start --prefix frontend",
         "start": "concurrently \"npm run server\" \"npm run client\""
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/bernizhel/mern-traversymedia.git"
-    },
-    "keywords": [],
-    "author": "Danil Kosenko <detrop.1995@gmail.com>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/bernizhel/mern-traversymedia/issues"
-    },
-    "homepage": "https://github.com/bernizhel/mern-traversymedia#readme",
     "devDependencies": {
         "concurrently": "^7.0.0",
         "cz-conventional-changelog": "^3.3.0"
