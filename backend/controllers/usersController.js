@@ -54,10 +54,13 @@ class UsersController {
         }
         try {
             const user = await User.findOne({ email });
+            if (!user) {
+                return next(ApiError.unauthorizedUser());
+            }
             if (user && (await bcrypt.compare(password, user.password))) {
                 return res.status(200).json({ token: generateJwt(user._id) });
             }
-            return next(ApiError.badRequestUserFieldsInvalid());
+            return next(ApiError.badRequestUserPasswordInvalid());
         } catch (err) {
             return next(ApiError.databaseError());
         }

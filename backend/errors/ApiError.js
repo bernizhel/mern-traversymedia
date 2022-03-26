@@ -25,6 +25,10 @@ class ApiError {
         return new ApiError(400, 'Invalid user data');
     }
 
+    static badRequestUserPasswordInvalid() {
+        return new ApiError(400, 'Invalid password');
+    }
+
     static unauthorized(message = 'Unauthorized') {
         return new ApiError(401, message);
     }
