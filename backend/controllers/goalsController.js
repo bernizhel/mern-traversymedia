@@ -17,20 +17,20 @@ class GoalsController {
     // @desc Get one goal
     // @route GET /api/goals/:id
     // @access Private
-    async getOne(req, res, next) {
-        try {
-            const goal = await Goal.findOne({
-                _id: req.params.id,
-                user: req.user._id,
-            });
-            if (!goal) {
-                return next(ApiError.notFoundGoal());
-            }
-            return res.status(200).json(goal);
-        } catch (err) {
-            return next(ApiError.databaseError());
-        }
-    }
+    // async getOne(req, res, next) {
+    //     try {
+    //         const goal = await Goal.findOne({
+    //             _id: req.params.id,
+    //             user: req.user._id,
+    //         });
+    //         if (!goal) {
+    //             return next(ApiError.notFoundGoal());
+    //         }
+    //         return res.status(200).json(goal);
+    //     } catch (err) {
+    //         return next(ApiError.databaseError());
+    //     }
+    // }
 
     // @desc Create a goal
     // @route POST /api/goals
@@ -79,7 +79,7 @@ class GoalsController {
             if (!deletedGoal) {
                 return next(ApiError.notFoundGoal());
             }
-            return res.status(200).json({ _id: req.params.id });
+            return res.status(200).json(deletedGoal);
         } catch (err) {
             return next(ApiError.databaseError);
         }

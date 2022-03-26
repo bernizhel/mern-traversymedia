@@ -95,7 +95,7 @@ h3 {
 .goal {
     background-color: #f4f4f4;
     margin: 10px 0;
-    padding: 20px 0 10px;
+    padding: 35px 10px 10px 10px;
     position: relative;
 }
 
@@ -108,10 +108,20 @@ h3 {
     background: none;
 }
 
+.goal .edit {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
 .form,
 .content {
     width: 70%;
     margin: 0 auto;
+    padding-bottom: 2em;
 }
 
 .form-group {
@@ -133,6 +143,41 @@ h3 {
     text-align: left;
     display: block;
     margin: 0 0 5px 3px;
+}
+
+.modal-container {
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+    position: relative;
+    width: 66vw;
+    min-height: 200px;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    padding-bottom: 0;
+}
+
+.modal .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    border: none;
+    background: none;
 }
 
 .btn {

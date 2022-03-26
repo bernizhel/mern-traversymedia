@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { FaUser } from 'react-icons/fa';
 import { Spinner } from '../components/Spinner';
 import { registerAsync, reset } from '../features/auth/authSlice';
+import { setFirstLoading } from '../features/goals/goalsSlice';
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -26,8 +27,11 @@ export const Register = () => {
             return;
         }
         if (isSuccess || user) {
-            navigate('/');
+            toast.success(
+                `Congratulations on creating a new account, ${user.name}!`,
+            );
             dispatch(reset());
+            navigate('/');
             return;
         }
     }, [user, isError, isSuccess, message, navigate, dispatch]);
@@ -48,6 +52,7 @@ export const Register = () => {
                 password,
             };
             dispatch(registerAsync(userData));
+            dispatch(setFirstLoading());
         }
     };
     if (isLoading) {
@@ -72,6 +77,7 @@ export const Register = () => {
                             value={name}
                             placeholder='Enter your name'
                             onChange={onChange}
+                            autoComplete='username'
                         />
                     </div>
                     <div className='form-group'>
@@ -83,6 +89,7 @@ export const Register = () => {
                             value={email}
                             placeholder='Enter your email'
                             onChange={onChange}
+                            autoComplete='email'
                         />
                     </div>
                     <div className='form-group'>
@@ -94,6 +101,7 @@ export const Register = () => {
                             value={password}
                             placeholder='Enter your password'
                             onChange={onChange}
+                            autoComplete='new-password'
                         />
                     </div>
                     <div className='form-group'>
@@ -105,6 +113,7 @@ export const Register = () => {
                             value={passwordConfirmation}
                             placeholder='Repeat your password'
                             onChange={onChange}
+                            autoComplete='new-password'
                         />
                     </div>
                     <div className='form-group'>

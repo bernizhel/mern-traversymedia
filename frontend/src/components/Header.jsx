@@ -1,7 +1,8 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logoutAsync, reset } from '../features/auth/authSlice';
+import { logoutAsync, userReset } from '../features/auth/authSlice';
+import { goalsReset } from '../features/goals/goalsSlice';
 
 export const Header = () => {
     const navigate = useNavigate();
@@ -9,13 +10,18 @@ export const Header = () => {
     const { user } = useSelector((state) => state.auth);
     const onLogout = () => {
         dispatch(logoutAsync());
-        dispatch(reset());
+        dispatch(userReset());
+        dispatch(goalsReset());
         navigate('/');
     };
     return (
         <header className='header'>
             <div className='logo'>
-                <Link to='/'>Goalsetter</Link>
+                {user ? (
+                    <Link to='/'>Goalsetter</Link>
+                ) : (
+                    <Link to='/login'>Goalsetter</Link>
+                )}
             </div>
             <ul>
                 {user ? (

@@ -9,7 +9,7 @@ goalsRouter
 
 goalsRouter
     .route('/:id')
-    .get(authMiddleware, goalsController.getOne)
+    // .get(authMiddleware, goalsController.getOne)
     .put(authMiddleware, goalsController.updateOne)
     .delete(authMiddleware, goalsController.deleteOne);
 

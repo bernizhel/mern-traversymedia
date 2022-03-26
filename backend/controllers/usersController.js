@@ -36,7 +36,9 @@ class UsersController {
             if (!user) {
                 return next(ApiError.badRequestUserFieldsInvalid());
             }
-            return res.status(201).json({ token: generateJwt(user._id) });
+            return res
+                .status(201)
+                .json({ token: generateJwt(user._id), name: user.name });
         } catch (err) {
             return next(ApiError.databaseError());
         }
@@ -58,7 +60,9 @@ class UsersController {
                 return next(ApiError.unauthorizedUser());
             }
             if (user && (await bcrypt.compare(password, user.password))) {
-                return res.status(200).json({ token: generateJwt(user._id) });
+                return res
+                    .status(200)
+                    .json({ token: generateJwt(user._id), name: user.name });
             }
             return next(ApiError.badRequestUserPasswordInvalid());
         } catch (err) {
@@ -69,13 +73,13 @@ class UsersController {
     // @desc Get user data
     // @route GET /api/users/auth
     // @access Private
-    async auth(req, res, next) {
-        try {
-            return res.status(200).json({ _id: req.user._id });
-        } catch (err) {
-            return next(ApiError.databaseError());
-        }
-    }
+    // async auth(req, res, next) {
+    //     try {
+    //         return res.status(200).json({ _id: req.user._id });
+    //     } catch (err) {
+    //         return next(ApiError.databaseError());
+    //     }
+    // }
 }
 
 module.exports = { usersController: new UsersController() };

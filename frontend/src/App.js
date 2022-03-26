@@ -11,13 +11,12 @@ export const App = () => {
         <>
             <ToastContainer
                 position='top-left'
-                autoClose={5000}
-                hideProgressBar={false}
+                autoClose={2000}
+                hideProgressBar={true}
                 newestOnTop={false}
-                closeOnClick
+                draggable
                 rtl={false}
                 pauseOnFocusLoss
-                draggable
                 pauseOnHover
             />
             <BrowserRouter>

@@ -12,8 +12,13 @@ const authMiddleware = async (req, _, next) => {
         return next(ApiError.unauthorizedToken());
     }
     if (auth?.startsWith('Bearer')) {
+        let decoded;
         try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            decoded = jwt.verify(token, process.env.JWT_SECRET);
+        } catch (err) {
+            return next(ApiError.unauthorized());
+        }
+        try {
             const user = await User.findById(decoded._id);
             if (!user) {
                 return next(ApiError.unauthorizedUser());
@@ -21,7 +26,7 @@ const authMiddleware = async (req, _, next) => {
             req.user = { _id: user._id };
             return next();
         } catch (err) {
-            return next(ApiError.unauthorized());
+            return next(ApiError.databaseError());
         }
     }
     return next(ApiError.unauthorizedAuthorizationHeaderInvalid());

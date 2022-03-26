@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Spinner } from '../components/Spinner';
 import { loginAsync, reset } from '../features/auth/authSlice';
+import { setFirstLoading } from '../features/goals/goalsSlice';
 
 export const Login = () => {
     const [formData, setFormData] = useState({
@@ -24,8 +25,9 @@ export const Login = () => {
             return;
         }
         if (isSuccess || user) {
-            navigate('/');
+            toast.success(`Welcome, ${user.name}!`);
             dispatch(reset());
+            navigate('/');
             return;
         }
     }, [user, isError, isSuccess, message, navigate, dispatch]);
@@ -42,6 +44,7 @@ export const Login = () => {
             password,
         };
         dispatch(loginAsync(userData));
+        dispatch(setFirstLoading());
     };
     if (isLoading) {
         return <Spinner />;
@@ -65,6 +68,7 @@ export const Login = () => {
                             value={email}
                             placeholder='Enter your email'
                             onChange={onChange}
+                            autoComplete='email'
                         />
                     </div>
                     <div className='form-group'>
@@ -76,6 +80,7 @@ export const Login = () => {
                             value={password}
                             placeholder='Enter your password'
                             onChange={onChange}
+                            autoComplete='current-password'
                         />
                     </div>
                     <div className='form-group'>
